@@ -103,8 +103,8 @@ class DT_Advanced_Metrics {
      */
     private function includes() {
         require_once( 'includes/admin-menu-and-tabs.php' );
-        require_once( 'includes/ui-menu-and-enqueue.php' );
         require_once( 'includes/rest-endpoints.php' );
+        require_once( 'includes/charts/charts-loader.php' );
     }
 
     /**
@@ -358,4 +358,14 @@ function dt_advanced_metrics_hook_admin_notice() {
 function dt_advanced_metrics_ajax_notice_handler() {
     $type = 'dt-advanced-metrics';
     update_option( 'dismissed-' . $type, true );
+}
+
+function dt_advanced_metrics_get_url() {
+    if ( isset( $_SERVER["SERVER_NAME"] ) ) {
+        $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) );
+        if ( isset( $_SERVER["REQUEST_URI"] ) ) {
+            $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+        }
+    }
+    return trim( str_replace( get_site_url(), "", $url ), '/' );
 }

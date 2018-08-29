@@ -35,7 +35,7 @@ function sample_api_call( button_data ) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: localizedObject.root + 'dt/v1/'+localizedObject.name_key+'/sample',
+        url: localizedObject.root + 'dt/v1/advanced/sample',
         beforeSend: function(xhr) {
             xhr.setRequestHeader('X-WP-Nonce', localizedObject.nonce);
         },
