@@ -8,7 +8,7 @@ jQuery(document).ready(function() {
 function show_advanced_overview(){
     "use strict";
 
-    let localizedObject = wpApiAdvanced // change this object to the one named in ui-menu.php
+    let localizedObject = wpApiAdvanced // change this object to the one named in ui-menu-and-enqueue.php
 
     let chartDiv = jQuery('#chart') // retrieves the chart div in the metrics page
 
@@ -24,7 +24,7 @@ function show_advanced_overview(){
 function sample_api_call( button_data ) {
 
 
-    let localizedObject = wpApiAdvanced // change this object to the one named in ui-menu.php
+    let localizedObject = wpApiAdvanced // change this object to the one named in ui-menu-and-enqueue.php
     let button = jQuery('#sample_button')
 
     button.append(localizedObject.spinner)
