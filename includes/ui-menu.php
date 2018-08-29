@@ -9,7 +9,7 @@ class DT_Advanced_Metrics_UI_Menu
     public $name_key = 'advanced'; // suggest using one word, lower case.
     public $title = 'Advanced Metrics';
     public $first_item = 'Overview';
-    public $jsObject = 'wpApiAdvanced'; // This object will be loaded into the metrics.js file by the wp_localize_script.
+    public $js_object = 'wpApiAdvanced'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     // End Change These Names
 
     /**
@@ -20,9 +20,9 @@ class DT_Advanced_Metrics_UI_Menu
      * @return string
      */
     public function menu( $content ) {
-        $content .= '<li><a href="'. site_url( '/metrics/'.$this->name_key.'/' ) .'#'.$this->name_key.'_overview" onclick="show_'.$this->name_key.'_overview()">' .  esc_html__( $this->title ) . '</a>
+        $content .= '<li><a href="'. site_url( '/metrics/'.$this->name_key.'/' ) .'#'.$this->name_key.'_overview" onclick="show_'.$this->name_key.'_overview()">' .  $this->title . '</a>
             <ul class="menu vertical nested">
-              <li><a href="'. site_url( '/metrics/'.$this->name_key.'/' ) .'#'.$this->name_key.'_overview" onclick="show_'.$this->name_key.'_overview()">' .  esc_html__( $this->first_item ) . '</a></li>
+              <li><a href="'. site_url( '/metrics/'.$this->name_key.'/' ) .'#'.$this->name_key.'_overview" onclick="show_'.$this->name_key.'_overview()">' . $this->first_item . '</a></li>
               <!-- Add new menu list items below -->
               
               
@@ -39,14 +39,14 @@ class DT_Advanced_Metrics_UI_Menu
         wp_enqueue_script( 'dt_'.$this->name_key.'_script', trailingslashit( plugin_dir_url( __FILE__ ) ) . 'metrics.js', [
             'jquery',
             'jquery-ui-core',
-        ], filemtime( plugin_dir_path(__DIR__ ) . 'includes/metrics.js' ), true );
+        ], filemtime( plugin_dir_path( __DIR__ ) . 'includes/metrics.js' ), true );
 
         // Localize script with array data
         wp_localize_script(
-            'dt_'.$this->name_key.'_script', $this->jsObject, [
+            'dt_'.$this->name_key.'_script', $this->js_object, [
                 'name_key' => $this->name_key,
                 'root' => esc_url_raw( rest_url() ),
-                'plugin_uri' => plugin_dir_url(__DIR__ ),
+                'plugin_uri' => plugin_dir_url( __DIR__ ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
@@ -57,7 +57,7 @@ class DT_Advanced_Metrics_UI_Menu
 
                 ],
                 'translations' => [
-                    "title" => __( $this->title ),
+                    "title" => $this->title,
                 ]
             ]
         );

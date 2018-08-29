@@ -78,7 +78,7 @@ class DT_Advanced_Metrics_Endpoints
             $results = $params['button_data'];
             return $results;
         } else {
-            return new WP_Error(__METHOD__, 'Missing parameters.');
+            return new WP_Error( __METHOD__, 'Missing parameters.' );
         }
     }
 }
