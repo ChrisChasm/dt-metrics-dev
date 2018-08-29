@@ -103,7 +103,7 @@ class DT_Advanced_Metrics {
      */
     private function includes() {
         require_once( 'includes/admin-menu-and-tabs.php' );
-        require_once( 'includes/ui-menu.php' );
+        require_once( 'includes/ui-menu-and-enqueue.php' );
         require_once( 'includes/rest-endpoints.php' );
     }
 
