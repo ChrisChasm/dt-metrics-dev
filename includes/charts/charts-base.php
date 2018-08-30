@@ -15,15 +15,15 @@ abstract class DT_Advanced_Metrics_Chart_Base
     {
         // these are the master list of names
         $this->names['base'] = [
-           'slug' =>  'advanced',
-           'title' =>  'Advanced Metrics',
-           'js_object_name' =>  'wpApiAdvanced',
-           'js_file_name' =>  'charts-base.js',
-           'deep_link_hash' =>  '#advanced_overview',
-           'onclick_function' =>  'show_advanced_overview()',
-           'first_item' =>  'Overview',
+           'slug' => 'advanced',
+           'title' => 'Advanced Metrics',
+           'js_object_name' => 'wpApiAdvanced',
+           'js_file_name' => 'charts-base.js',
+           'deep_link_hash' => '#advanced_overview',
+           'onclick_function' => 'show_advanced_overview()',
+           'first_item' => 'Overview',
         ];
-        
+
         $this->names['base']['slug'] = str_replace( ' ', '', trim( strtolower( $this->names['base']['slug'] ) ) );
         $url_path = $this->get_url();
 
@@ -53,11 +53,11 @@ abstract class DT_Advanced_Metrics_Chart_Base
     public function base_menu( $content ) {
         $lines = '';
         $list = $this->names;
-        unset($list['base']);
-        array_filter($list);
+        unset( $list['base'] );
+        array_filter( $list );
         if ( ! empty( $list ) ) {
             foreach ( $list as $item ) {
-                dt_write_log($item);
+                dt_write_log( $item );
                 $lines .= '<li><a href="'. site_url( '/metrics/'.$this->names['base']['slug'].'/'.$item['slug'].'/' ) . $item['deep_link_hash'].'" onclick="'.$item['onclick_function'].'">' . $item['title'] . '</a></li>';
             }
         }
