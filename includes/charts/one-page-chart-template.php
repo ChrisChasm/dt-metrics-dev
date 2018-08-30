@@ -20,15 +20,14 @@ class DT_Advanced_Metrics_Chart_Template extends DT_Advanced_Metrics_Chart_Base
 
         // Main renaming array. Change these names to customize the template.
         $this->names['template'] = [
-            'slug' =>  'template',
-            'title' =>  'Template',
-            'js_object_name' =>  'wpApiTemplate',
-            'js_file_name' =>  'one-page-chart-template.js',
-            'deep_link_hash' =>  '#template_overview',
-            'onclick_function' =>  'show_template_overview()',
+            'slug' => 'template',
+            'title' => 'Template',
+            'js_object_name' => 'wpApiTemplate',
+            'js_file_name' => 'one-page-chart-template.js',
+            'deep_link_hash' => '#template_overview',
+            'onclick_function' => 'show_template_overview()',
         ];
-        
-        
+
         // Add menu item
         $this->list_item[] = [
             'slug' => $this->names['template']['slug'],
