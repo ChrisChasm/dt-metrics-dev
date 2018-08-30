@@ -112,9 +112,12 @@ abstract class DT_Advanced_Metrics_Chart_Base
         ];
     }
 
+    /**
+     * Rest endpoint
+     */
     public function base_api_routes() {
         register_rest_route(
-            $this->namespace, 'template/sample', [
+            $this->namespace, 'sample', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'base_sample' ],
             ]

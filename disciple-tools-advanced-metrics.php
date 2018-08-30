@@ -103,7 +103,6 @@ class DT_Advanced_Metrics {
      */
     private function includes() {
         require_once( 'includes/admin-menu-and-tabs.php' );
-        require_once( 'includes/rest-endpoints.php' );
         require_once( 'includes/charts/charts-loader.php' );
     }
 
