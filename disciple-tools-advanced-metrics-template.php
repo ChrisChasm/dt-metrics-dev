@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: Disciple Tools - Advanced Metrics
- * Plugin URI: https://github.com/ZumeProject/disciple-tools-advanced-metrics
- * Description: Disciple Tools - Advanced Metrics extends the charts and reporting ability of Disciple Tools
+ * Plugin Name: Disciple Tools - Advanced Metrics Template
+ * Plugin URI: https://github.com/ZumeProject/disciple-tools-advanced-metrics-template
+ * Description: Disciple Tools - Advanced Metrics Template extends the charts and reporting ability of Disciple Tools
  * Version:  0.1.0
  * Author URI: https://github.com/DiscipleTools
- * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-advanced-metrics
+ * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-advanced-metrics-template
  * Requires at least: 4.7.0
  * (Requires 4.7+ because of the integration of the REST API at 4.7 and the security requirements of this milestone version.)
  * Tested up to: 4.9
@@ -258,7 +258,7 @@ function dt_advanced_metrics_no_disciple_tools_theme_found()
 {
     ?>
     <div class="notice notice-error">
-        <p><?php esc_html_e( "'Disciple Tools - Advanced Metrics' requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or deactivate 'Disciple Tools - Advanced Metrics' plugin.", "dt_advanced_metrics" ); ?></p>
+        <p><?php esc_html_e( "'Disciple Tools - Advanced Metrics Template' requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or deactivate 'Disciple Tools - Advanced Metrics Template' plugin.", "dt_advanced_metrics" ); ?></p>
     </div>
     <?php
 }
@@ -330,7 +330,7 @@ function dt_advanced_metrics_hook_admin_notice() {
     if ( ! get_option( 'dismissed-dt-advanced-metrics', false ) ) {
         // multiple dismissible notice states ?>
         <div class="notice notice-error notice-dt-starter is-dismissible" data-notice="dt-demo">
-            <p><?php esc_html_e( "'Disciple Tools - Advanced Metrics' requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or deactivate 'Disciple Tools - Advanced Metrics'." ); ?></p>
+            <p><?php esc_html_e( "'Disciple Tools - Advanced Metrics Template' requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or deactivate 'Disciple Tools - Advanced Metrics Template'." ); ?></p>
         </div>
         <script>
             jQuery(function($) {
