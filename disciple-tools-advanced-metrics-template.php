@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Disciple Tools - Advanced Metrics Template
+ * Plugin Name: Disciple Tools - Example Metrics Template
  * Plugin URI: https://github.com/ZumeProject/disciple-tools-advanced-metrics-template
- * Description: Disciple Tools - Advanced Metrics Template extends the charts and reporting ability of Disciple Tools
+ * Description: Disciple Tools - Example Metrics Template extends the charts and reporting ability of Disciple Tools
  * Version:  0.1.0
  * Author URI: https://github.com/DiscipleTools
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-advanced-metrics-template
@@ -16,31 +16,36 @@
  *          https://www.gnu.org/licenses/gpl-2.0.html
  */
 
+/**
+ * @todo replace all occurrences of the string "example" in the entire plugin with a string of your choice
+ */
+
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
 /**
- * Gets the instance of the `DT_Advanced_Metrics` class.
+ * Gets the instance of the `DT_Example_Metrics` class.
  *
  * @since  0.1
  * @access public
  * @return object
  */
-function dt_advanced_metrics() {
+function dt_example_metrics() {
     $current_theme = get_option( 'current_theme' );
 
     if ( 'Disciple Tools' == $current_theme || dt_is_child_theme_of_disciple_tools() ) {
-        return DT_Advanced_Metrics::get_instance();
+        return DT_Example_Metrics::get_instance();
     }
     else {
-        add_action( 'admin_notices', 'dt_advanced_metrics_hook_admin_notice' );
-        add_action( 'wp_ajax_dismissed_notice_handler', 'dt_advanced_metrics_ajax_notice_handler' );
+        add_action( 'admin_notices', 'dt_example_metrics_hook_admin_notice' );
+        add_action( 'wp_ajax_dismissed_notice_handler', 'dt_example_metrics_ajax_notice_handler' );
         return new WP_Error( 'current_theme_not_dt', 'Disciple Tools Theme not active.' );
     }
 
 }
-add_action( 'plugins_loaded', 'dt_advanced_metrics' );
+add_action( 'init', 'dt_example_metrics' );
 
 /**
  * Singleton class for setting up the plugin.
@@ -48,7 +53,7 @@ add_action( 'plugins_loaded', 'dt_advanced_metrics' );
  * @since  0.1
  * @access public
  */
-class DT_Advanced_Metrics {
+class DT_Example_Metrics {
 
     /**
      * Declares public variables
@@ -76,7 +81,7 @@ class DT_Advanced_Metrics {
         static $instance = null;
 
         if ( is_null( $instance ) ) {
-            $instance = new dt_advanced_metrics();
+            $instance = new dt_example_metrics();
             $instance->setup();
             $instance->includes();
             $instance->setup_actions();
@@ -124,7 +129,7 @@ class DT_Advanced_Metrics {
 
 
         // Admin and settings variables
-        $this->token             = 'dt_advanced_metrics';
+        $this->token             = 'dt_example_metrics';
         $this->version             = '0.1';
     }
 
@@ -195,7 +200,7 @@ class DT_Advanced_Metrics {
      * @return void
      */
     public function i18n() {
-        load_plugin_textdomain( 'dt_advanced_metrics', false, trailingslashit( dirname( plugin_basename( __FILE__ ) ) ). 'languages' );
+        load_plugin_textdomain( 'dt_example_metrics', false, trailingslashit( dirname( plugin_basename( __FILE__ ) ) ). 'languages' );
     }
 
     /**
@@ -206,7 +211,7 @@ class DT_Advanced_Metrics {
      * @return string
      */
     public function __toString() {
-        return 'dt_advanced_metrics';
+        return 'dt_example_metrics';
     }
 
     /**
@@ -217,7 +222,7 @@ class DT_Advanced_Metrics {
      * @return void
      */
     public function __clone() {
-        _doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'dt_advanced_metrics' ), '0.1' );
+        _doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'dt_example_metrics' ), '0.1' );
     }
 
     /**
@@ -228,7 +233,7 @@ class DT_Advanced_Metrics {
      * @return void
      */
     public function __wakeup() {
-        _doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'dt_advanced_metrics' ), '0.1' );
+        _doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'dt_example_metrics' ), '0.1' );
     }
 
     /**
@@ -240,7 +245,7 @@ class DT_Advanced_Metrics {
      */
     public function __call( $method = '', $args = array() ) {
         // @codingStandardsIgnoreLine
-        _doing_it_wrong( "dt_advanced_metrics::{$method}", esc_html__( 'Method does not exist.', 'dt_advanced_metrics' ), '0.1' );
+        _doing_it_wrong( "dt_example_metrics::{$method}", esc_html__( 'Method does not exist.', 'dt_example_metrics' ), '0.1' );
         unset( $method, $args );
         return null;
     }
@@ -248,17 +253,17 @@ class DT_Advanced_Metrics {
 // end main plugin class
 
 // Register activation hook.
-register_activation_hook( __FILE__, [ 'DT_Advanced_Metrics', 'activation' ] );
-register_deactivation_hook( __FILE__, [ 'DT_Advanced_Metrics', 'deactivation' ] );
+register_activation_hook( __FILE__, [ 'DT_Example_Metrics', 'activation' ] );
+register_deactivation_hook( __FILE__, [ 'DT_Example_Metrics', 'deactivation' ] );
 
 /**
  * Admin alert for when Disciple Tools Theme is not available
  */
-function dt_advanced_metrics_no_disciple_tools_theme_found()
+function dt_example_metrics_no_disciple_tools_theme_found()
 {
     ?>
     <div class="notice notice-error">
-        <p><?php esc_html_e( "'Disciple Tools - Advanced Metrics Template' requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or deactivate 'Disciple Tools - Advanced Metrics Template' plugin.", "dt_advanced_metrics" ); ?></p>
+        <p><?php esc_html_e( "'Disciple Tools - Example Metrics Template' requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or deactivate 'Disciple Tools - Example Metrics Template' plugin.", "dt_example_metrics" ); ?></p>
     </div>
     <?php
 }
@@ -325,12 +330,12 @@ if ( ! function_exists( 'dt_is_child_theme_of_disciple_tools' ) ) {
     }
 }
 
-function dt_advanced_metrics_hook_admin_notice() {
+function dt_example_metrics_hook_admin_notice() {
     // Check if it's been dismissed...
-    if ( ! get_option( 'dismissed-dt-advanced-metrics', false ) ) {
+    if ( ! get_option( 'dismissed-dt-example-metrics', false ) ) {
         // multiple dismissible notice states ?>
         <div class="notice notice-error notice-dt-starter is-dismissible" data-notice="dt-demo">
-            <p><?php esc_html_e( "'Disciple Tools - Advanced Metrics Template' requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or deactivate 'Disciple Tools - Advanced Metrics Template'." ); ?></p>
+            <p><?php esc_html_e( "'Disciple Tools - Example Metrics Template' requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or deactivate 'Disciple Tools - Example Metrics Template'." ); ?></p>
         </div>
         <script>
             jQuery(function($) {
@@ -354,12 +359,12 @@ function dt_advanced_metrics_hook_admin_notice() {
 /**
  * AJAX handler to store the state of dismissible notices.
  */
-function dt_advanced_metrics_ajax_notice_handler() {
-    $type = 'dt-advanced-metrics';
+function dt_example_metrics_ajax_notice_handler() {
+    $type = 'dt-example-metrics';
     update_option( 'dismissed-' . $type, true );
 }
 
-function dt_advanced_metrics_get_url() {
+function dt_example_metrics_get_url() {
     if ( isset( $_SERVER["SERVER_NAME"] ) ) {
         $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) );
         if ( isset( $_SERVER["REQUEST_URI"] ) ) {

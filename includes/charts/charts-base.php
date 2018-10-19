@@ -1,92 +1,75 @@
 <?php
 
 
-abstract class DT_Advanced_Metrics_Chart_Base
+abstract class DT_Example_Metrics_Chart_Base
 {
 
-    public $names = [];
-    public $list_item = [];
-    public $namespace = "dt/v1/advanced/";
+    public $namespace = "dt/v1/example/";
+    public $base_slug = 'example';
+    public $base_title = "Example Metrics";
 
+    //child
+    public $title = '';
+    public $slug = '';
+    public $js_object_name = ''; // This object will be loaded into the metrics.js file by the wp_localize_script.
+    public $js_file_name = ''; // should be full file name plus extension
+    public $deep_link_hash = ''; // should be the full hash name. #example_of_hash
+    public $permissions = [];
     /**
      * Disciple_Tools_Counter constructor.
      */
-    public function __construct()
-    {
-        // these are the master list of names
-        $this->names['base'] = [
-           'slug' => 'advanced',
-           'title' => 'Advanced Metrics',
-           'js_object_name' => 'wpApiAdvanced',
-           'js_file_name' => 'charts-base.js',
-           'deep_link_hash' => '#advanced_overview',
-           'onclick_function' => 'show_advanced_overview()',
-           'first_item' => 'Overview',
-        ];
+    public function __construct() {
+        $this->base_slug = str_replace( ' ', '', trim( strtolower( $this->base_slug ) ) );
+        $url_path = dt_get_url_path();
 
-        $this->names['base']['slug'] = str_replace( ' ', '', trim( strtolower( $this->names['base']['slug'] ) ) );
-        $url_path = $this->get_url();
+        if ( strpos( $url_path, 'metrics' ) === 0 ) {
+            if ( !$this->has_permission() ){
+                return;
+            }
+            add_filter( 'dt_metrics_menu', [ $this, 'base_menu' ], 99 ); //load menu links
 
-        if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
-
-            add_filter( 'dt_templates_for_urls', [ $this, 'base_add_url' ] ); // add custom URL
-            add_filter( 'dt_metrics_menu', [ $this, 'base_menu' ], 99 );
-
-            if ( 'metrics/advanced' === $url_path ) {
+            if ( strpos( $url_path, 'metrics/example' ) === 0 ) {
+                add_filter( 'dt_templates_for_urls', [ $this, 'base_add_url' ] ); // add custom URLs
                 add_action( 'wp_enqueue_scripts', [ $this, 'base_scripts' ], 99 );
+                add_action( 'rest_api_init', [ $this, 'base_api_routes' ] );
             }
         }
-        add_action( 'rest_api_init', [ $this, 'base_api_routes' ] );
-
-    }
-
-    public function get_url() {
-        if ( isset( $_SERVER["SERVER_NAME"] ) ) {
-            $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) );
-            if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-                $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
-            }
-        }
-        return trim( str_replace( get_site_url(), "", $url ), '/' );
     }
 
     public function base_menu( $content ) {
-        $lines = '';
-        $list = $this->names;
-        unset( $list['base'] );
-        array_filter( $list );
-        if ( ! empty( $list ) ) {
-            foreach ( $list as $item ) {
-                dt_write_log( $item );
-                $lines .= '<li><a href="'. site_url( '/metrics/'.$this->names['base']['slug'].'/'.$item['slug'].'/' ) . $item['deep_link_hash'].'" onclick="'.$item['onclick_function'].'">' . $item['title'] . '</a></li>';
-            }
-        }
+        $line = '<li><a href="'. site_url( '/metrics/'.$this->base_slug.'/'.$this->slug.'/' ) . $this->deep_link_hash.'">' . $this->title . '</a></li>';
 
-        $content .= '
-            <li><a href="'. site_url( '/metrics/'. $this->names['base']['slug'] .'/'. $this->names['base']['deep_link_hash'] ) .'" onclick="'.$this->names['base']['onclick_function'].'">'.$this->names['base']['title'].'</a>
-                <ul class="menu vertical nested">
-                    <li><a href="'. site_url( '/metrics/'. $this->names['base']['slug'] .'/'. $this->names['base']['deep_link_hash'] ) . '" onclick="'.$this->names['base']['onclick_function'].'">'.$this->names['base']['first_item'].'</a></li>';
-        $content .= $lines; // this adds other menu items after
-        $content .= '</ul></li>';
+        $ref = '<ul class="menu vertical nested" id="' . $this->base_slug . '">';
+        $pos = strpos( $content, $ref );
+        if ( $pos === false ){
+            $content .= '
+            <li><a href="'. site_url( '/metrics/'. $this->base_slug .'/'. $this->deep_link_hash ) .'">'.$this->base_title.'</a>
+                <ul class="menu vertical nested" id="' . $this->base_slug . '">'
+                        . $line . '
+            </ul></li>';
+        } else {
+            $content = substr_replace( $content, $ref . $line, $pos, strlen( $ref ) );
+        }
 
         return $content;
     }
 
     public function base_add_url( $template_for_url ) {
-        $template_for_url['metrics/'.$this->names['base']['slug']] = 'template-metrics.php';
+//        $template_for_url["metrics/$this->base_slug"] = 'template-metrics.php';
+        $template_for_url["metrics/$this->base_slug/$this->slug"] = 'template-metrics.php';
         return $template_for_url;
     }
 
     public function base_scripts() {
-        wp_enqueue_script( 'dt_'.$this->names['base']['slug'].'_script', trailingslashit( plugin_dir_url( __FILE__ ) ) . $this->names['base']['js_file_name'], [
+        wp_enqueue_script( 'dt_'.$this->base_slug.'_script', trailingslashit( plugin_dir_url( __FILE__ ) ) . 'charts-base.js', [
             'jquery',
             'jquery-ui-core',
-        ], filemtime( plugin_dir_path( __DIR__ ) . 'includes/'.$this->names['base']['js_file_name'] ), true );
+        ], filemtime( plugin_dir_path( __FILE__ ) .'charts-base.js' ), true );
 
         // Localize script with array data
         wp_localize_script(
-            'dt_'.$this->names['base']['slug'].'_script', $this->names['base']['js_object_name'], [
-                'slug' => $this->names['base']['slug'],
+            'dt_'.$this->base_slug.'_script', 'wpApiBase', [
+                'slug' => $this->base_slug,
                 'root' => esc_url_raw( rest_url() ),
                 'plugin_uri' => plugin_dir_url( __DIR__ ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
@@ -108,12 +91,12 @@ abstract class DT_Advanced_Metrics_Chart_Base
 
     public function base_translations() {
         return [
-            "title" => $this->names['base']['title'],
+            "title" => $this->base_title,
         ];
     }
 
     /**
-     * Rest endpoint
+     * Rest Endpoint
      */
     public function base_api_routes() {
         register_rest_route(
@@ -125,14 +108,27 @@ abstract class DT_Advanced_Metrics_Chart_Base
     }
 
     public function base_sample( WP_REST_Request $request ) {
-
+        if ( $this->has_permission() ){
+            return new WP_Error( __METHOD__, __( 'Permission Denied' ) );
+        }
         $params = $request->get_params();
         if ( isset( $params['button_data'] ) ) {
             // Do something
             $results = $params['button_data'];
             return $results;
         } else {
-            return new WP_Error( __METHOD__, 'Missing parameters.' );
+            return new WP_Error( __METHOD__, __( 'Missing parameters.' ) );
         }
+    }
+
+    public function has_permission(){
+        $permissions = $this->permissions;
+        $pass = count( $permissions ) === 0;
+        foreach ( $this->permissions as $permission ){
+            if ( current_user_can( $permission ) ){
+                $pass = true;
+            }
+        }
+        return $pass;
     }
 }
